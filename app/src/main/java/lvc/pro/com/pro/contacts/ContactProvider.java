@@ -54,17 +54,6 @@ public class ContactProvider {
     static refresh itemrefresh;
     static deleterefresh itemdelete;
 
-//    private static final int REQUEST_CODE_SIGN_IN = 0;
-//    private static final int REQUEST_CODE_CAPTURE_IMAGE = 1;
-//    private static final int REQUEST_CODE_CREATOR = 2;
-//
-//    private GoogleSignInClient mGoogleSignInClient;
-//    private DriveClient mDriveClient;
-//    private DriveResourceClient mDriveResourceClient;
-//    private Bitmap mBitmapToSave;
-
-
-
     public static void deletelistener(deleterefresh list) {
         itemdelete = list;
     }
@@ -405,7 +394,6 @@ public class ContactProvider {
         }
         return recordedContacts;
     }
-
 
     public static void sendnotification(Context ctx) {
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(ctx);
