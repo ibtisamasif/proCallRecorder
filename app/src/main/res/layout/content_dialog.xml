@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="@dimen/fab_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="lvc.pro.com.pro.DialogActivity"
+    tools:showIn="@layout/activity_dialog">
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/question_save_recording"
+        android:textColor="@color/card_black_color"
+        android:textSize="@dimen/dialog_button_text_size" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_title"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:gravity="right">
+
+        <TextView
+            android:id="@+id/dialog_text_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/button_margin"
+            android:padding="@dimen/dialog_button_padding"
+            android:text="@string/text_yes"
+            android:textColor="@color/card_black_color"
+            android:textSize="@dimen/dialog_button_text_size" />
+
+        <TextView
+            android:id="@+id/dialog_text_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/dialog_text_yes"
+            android:padding="@dimen/dialog_button_padding"
+            android:text="@string/text_no"
+            android:textColor="@color/card_black_color"
+            android:textSize="@dimen/dialog_button_text_size" />
+    </RelativeLayout>
+
+</RelativeLayout>
