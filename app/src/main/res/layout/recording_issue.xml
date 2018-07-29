@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <ScrollView
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:scrollbars="vertical">
 
         <android.support.constraint.ConstraintLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Micromax infinity"
-                android:textColor="@color/dark_green"
-                android:textAppearance="@android:style/TextAppearance.Material.Display1"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="8dp"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginLeft="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                tools:targetApi="lollipop"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintHorizontal_bias="0.0" />
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="Micromax infinity"
+                android:textAppearance="@android:style/TextAppearance.Material.Display1"
+                android:textColor="@color/dark_green"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:targetApi="lollipop" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -45,11 +45,11 @@
                 android:layout_marginTop="8dp"
                 android:text="Having issue with call recording"
                 android:textAppearance="@android:style/TextAppearance.Material.Body2"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView"
-                tools:targetApi="lollipop"
-                app:layout_constraintHorizontal_bias="0.0" />
+                tools:targetApi="lollipop" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -59,8 +59,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="16dp"
-                android:padding="12sp"
                 android:layout_marginTop="15dp"
+                android:padding="12sp"
                 android:text="@string/recoring_issue"
                 android:textAppearance="@android:style/TextAppearance.Material.Button"
                 app:layout_constraintLeft_toLeftOf="@+id/textView5"
@@ -124,13 +124,13 @@
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
     <!--<com.google.android.gms.ads.AdView-->
-        <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/adView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--ads:adSize="SMART_BANNER"-->
-        <!--ads:adUnitId="PASTE_YOUR_AD_ID">-->
+    <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/adView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom"-->
+    <!--ads:adSize="SMART_BANNER"-->
+    <!--ads:adUnitId="PASTE_YOUR_AD_ID">-->
     <!--</com.google.android.gms.ads.AdView>-->
 </FrameLayout>
 

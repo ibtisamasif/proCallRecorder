@@ -595,17 +595,15 @@ public class CallDetectionService extends Service {
                     Log.d(TAG, audiofile.getName());
                 }
 
-            }
-            else
-            {
+            } else {
                 Intent i = new Intent();
                 i.setClass(pContext, DialogActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra(Constants.sRECORDING_STARTED, true);
                 pContext.startActivity(i);
-                Log.d(CallDetectionService.class.getSimpleName()," eeeeeeeeeeeeeeee  shaked");
+                Log.d(CallDetectionService.class.getSimpleName(), " eeeeeeeeeeeeeeee  shaked");
             }
-            mShaked=false;
+            mShaked = false;
         } else {
             if (audiofile.exists()) {
                 audiofile.delete();

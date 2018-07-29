@@ -27,8 +27,8 @@ public class ListenActivity extends AppCompatActivity {
     ArrayList<String> listen = new ArrayList<>();
     ArrayList<String> tracks = new ArrayList<>();
     ListView listView;
-//    private AdView mAdView;
-public static boolean mIsDestroying = false;
+    //    private AdView mAdView;
+    public static boolean mIsDestroying = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,7 @@ public static boolean mIsDestroying = false;
             }
         });
     }
+
     @Override
     protected void onPause() {
         super.onPause();

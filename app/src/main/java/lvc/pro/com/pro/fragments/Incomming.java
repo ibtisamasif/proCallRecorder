@@ -49,7 +49,7 @@ import lvc.pro.com.pro.utils.StringUtils;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Incomming extends Fragment implements MainActivity.refreshstener,ActionMode.Callback {
+public class Incomming extends Fragment implements MainActivity.refreshstener, ActionMode.Callback {
     private static final String TAG = "Incomming";
 
     private IncommingAdapter recyclerAdapter;
@@ -272,8 +272,8 @@ public class Incomming extends Fragment implements MainActivity.refreshstener,Ac
     }
 
     private void refreshItems() {
-       recordings = ContactProvider.showAllRecordedlistfiles(ctx);
-       showContacts();
+        recordings = ContactProvider.showAllRecordedlistfiles(ctx);
+        showContacts();
         if (realrecordingcontacts.isEmpty()) {
             message.setVisibility(View.VISIBLE);
         } else {
@@ -308,7 +308,7 @@ public class Incomming extends Fragment implements MainActivity.refreshstener,Ac
             recordedContacts.clear();
         }
         //crash recordedContacts = ContactProvider.getCallList(getContext(), recordings, "IN");
-        if(getContext()!=null) {
+        if (getContext() != null) {
             recordedContacts = ContactProvider.getCallList(getContext(), recordings, "IN");
         }
         /*if(getActivity()!=null) {
@@ -374,7 +374,7 @@ public class Incomming extends Fragment implements MainActivity.refreshstener,Ac
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         MenuInflater inflater = mode.getMenuInflater();
         inflater.inflate(R.menu.menu_select, menu);
-        mSelectionMenu=menu;
+        mSelectionMenu = menu;
         return true;
     }
 
@@ -549,6 +549,7 @@ public class Incomming extends Fragment implements MainActivity.refreshstener,Ac
             refreshItems();
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();

@@ -26,7 +26,7 @@ import lvc.pro.com.pro.utility.SharedPreferenceUtility;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
     static Context ctx;
-    public static boolean mIsDestroying=false;
+    public static boolean mIsDestroying = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +112,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         }
     }
-//pre
+
+    //pre
    /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -124,12 +125,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
         return super.onOptionsItemSelected(item);
     }*/
-@Override
-protected void onPause() {
-    super.onPause();
-    mIsDestroying=true;
-    SharedPreferenceUtility.setBackgroundStatus(getApplicationContext(), true);
-}
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mIsDestroying = true;
+        SharedPreferenceUtility.setBackgroundStatus(getApplicationContext(), true);
+    }
 
     @Override
     protected void onResume() {
@@ -142,7 +143,7 @@ protected void onPause() {
             }
         }
         Constants.sIS_FROM_ANOTHER_ACTIVITY = false;
-        mIsDestroying=false;
+        mIsDestroying = false;
     }
 
     @Override

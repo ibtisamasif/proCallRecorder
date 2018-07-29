@@ -94,7 +94,7 @@ public class OutgoingAdapter extends RecyclerView.Adapter {
                     } else {
                         ((MyViewHolder) holder).clContactRow.setBackground(new ColorDrawable(ContextCompat.getColor(ctx, android.R.color.transparent)));
                     }*/
-                    ((MyViewHolder) holder).clContactRow.setBackgroundColor(ContextCompat.getColor(ctx,android. R.color.transparent));
+                    ((MyViewHolder) holder).clContactRow.setBackgroundColor(ContextCompat.getColor(ctx, android.R.color.transparent));
                 }
 
                 String Phonnumber = StringUtils.prepareContacts(ctx, contact.getNumber());
@@ -260,6 +260,7 @@ public class OutgoingAdapter extends RecyclerView.Adapter {
             return null;
         }
     }
+
     public ArrayList<Object> selectAll() {
         selectedContactsTimeStamps = new ArrayList<>();
         for (int i = 0; i < contacts.size(); i++) {

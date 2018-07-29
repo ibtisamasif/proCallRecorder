@@ -29,6 +29,7 @@ public class FAQActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
+
     //pre
   /*  @Override
     public boolean onOptionsItemSelected(MenuItem item) {

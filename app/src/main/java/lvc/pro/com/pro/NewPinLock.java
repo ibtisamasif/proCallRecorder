@@ -30,7 +30,7 @@ public class NewPinLock extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         final SharedPreferences sharedPreferences = getSharedPreferences("LOCK", MODE_PRIVATE);
         //final String pin = sharedPreferences.getString("PIN", "");
-       // boolean sets = getIntent().getBooleanExtra("SET", false);
+        // boolean sets = getIntent().getBooleanExtra("SET", false);
         pin = sharedPreferences.getString("PIN", "");
         sets = getIntent().getBooleanExtra("SET", false);
         final boolean onlySetPin = getIntent().getBooleanExtra(Constants.sKEY_FOR_ONLY_SET_PIN, false);
@@ -183,6 +183,7 @@ public class NewPinLock extends AppCompatActivity {
             }
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

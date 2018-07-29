@@ -464,7 +464,7 @@ public class ContactProvider {
                     //not deleted
                     itemdelete.deleterefreshList(true);
                     itemrefresh.refreshList(true);
-                    Toast.makeText(view.getContext(),  view.getContext().getString(R.string.recording_deletion_failed), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), view.getContext().getString(R.string.recording_deletion_failed), Toast.LENGTH_SHORT).show();
                 }
                 materialSheet.dismiss();
             }
@@ -559,7 +559,7 @@ public class ContactProvider {
             @Override
             public void onClick(View v) {
                 Constants.sIS_FROM_ANOTHER_ACTIVITY = true;
-                Constants.sFROM_MAIN_TO_ACTIVITY=true;
+                Constants.sFROM_MAIN_TO_ACTIVITY = true;
 //                Toast.makeText(v.getContext(),position, Toast.LENGTH_SHORT).show();
                 playmusic(v.getContext(), getFolderPath(v.getContext()) + "/" + recording, recording);
                 dialog.dismiss();
@@ -622,7 +622,7 @@ public class ContactProvider {
                     }
                 } else {
                     if (togglestate(view.getContext(), contact.getNumber())) {
-                        Toast.makeText(view.getContext(),  view.getContext().getString(R.string.recording_turned_on), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), view.getContext().getString(R.string.recording_turned_on), Toast.LENGTH_SHORT).show();
                         itemrefresh.refreshList(true);
                     }
                     //recording disabled turn it on
@@ -813,7 +813,7 @@ public class ContactProvider {
             for (String filename : recordings) {
                 String recordedfilearray[] = filename.split("__");      //recorded file_array
                 try {
-                 //   String s = recordedfilearray[2];
+                    //   String s = recordedfilearray[2];
                 } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                     continue;
@@ -891,7 +891,6 @@ public class ContactProvider {
         }
         return recordedfiles;
     }
-
 
 
 //    /** Start sign in activity. */

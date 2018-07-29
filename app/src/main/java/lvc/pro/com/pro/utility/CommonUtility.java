@@ -25,13 +25,10 @@ public class CommonUtility {
                 return Constants.sCONNECTED_TO_WIFI;
             } else if (mobile.isConnectedOrConnecting()) {
                 return Constants.sCONNECTED_TO_MOBILE_DATA;
-            }
-            else
-            {
+            } else {
                 return Constants.sNOT_CONNECTED;
             }
-        }
-        else {
+        } else {
             return Constants.sNOT_CONNECTED;
         }
 

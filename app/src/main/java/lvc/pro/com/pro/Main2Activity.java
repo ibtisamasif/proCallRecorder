@@ -30,7 +30,7 @@ public class Main2Activity extends AppCompatActivity {
     private int mediaFileLengthInMilliseconds;
     TextView title;
     String path;
-    public static boolean mIsDestroying=false;
+    public static boolean mIsDestroying = false;
 
 //    NativeExpressAdView mAdView;
 //    VideoController mVideoController;
@@ -172,14 +172,14 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mIsDestroying=true;
+        mIsDestroying = true;
         SharedPreferenceUtility.setBackgroundStatus(getApplicationContext(), true);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(!Constants.sFROM_LISTEN_TO_MAIN) {
+        if (!Constants.sFROM_LISTEN_TO_MAIN) {
             if (SharedPreferenceUtility.getLockActivatedStatus(getApplicationContext())) {
                 if ((SharedPreferenceUtility.getBackgroundStatus(getApplicationContext()))
                         && (!(Constants.sIS_FROM_ANOTHER_ACTIVITY))) {
@@ -189,9 +189,9 @@ public class Main2Activity extends AppCompatActivity {
                 }
             }
         }
-        Constants.sFROM_LISTEN_TO_MAIN=false;
+        Constants.sFROM_LISTEN_TO_MAIN = false;
         Constants.sIS_FROM_ANOTHER_ACTIVITY = false;
-        mIsDestroying=false;
+        mIsDestroying = false;
     }
 
     @Override

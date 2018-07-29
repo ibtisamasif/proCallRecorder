@@ -15,8 +15,8 @@ import lvc.pro.com.pro.utility.SharedPreferenceUtility;
 import lvc.pro.com.pro.utils.HuaweiProtectedAppsModule;
 
 public class Recording_issue extends AppCompatActivity {
-//    private AdView mAdView;
-public static boolean mIsDestroying=false;
+    //    private AdView mAdView;
+    public static boolean mIsDestroying = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +33,15 @@ public static boolean mIsDestroying=false;
         tvAddToProtectedApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new HuaweiProtectedAppsModule(Recording_issue.this).AlertIfHuaweiDevice("Huawei Protected Apps","This app requires to be enables in 'Protected Apps' to work in background","Dont show again","PROTECTED APPS","CANCEL");
+                new HuaweiProtectedAppsModule(Recording_issue.this).AlertIfHuaweiDevice("Huawei Protected Apps", "This app requires to be enables in 'Protected Apps' to work in background", "Dont show again", "PROTECTED APPS", "CANCEL");
             }
         });
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-        mIsDestroying=true;
+        mIsDestroying = true;
         SharedPreferenceUtility.setBackgroundStatus(getApplicationContext(), true);
     }
 
@@ -55,7 +56,7 @@ public static boolean mIsDestroying=false;
             }
         }
         Constants.sIS_FROM_ANOTHER_ACTIVITY = false;
-        mIsDestroying=false;
+        mIsDestroying = false;
     }
 
     @Override

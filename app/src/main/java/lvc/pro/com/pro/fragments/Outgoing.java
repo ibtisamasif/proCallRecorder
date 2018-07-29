@@ -49,7 +49,7 @@ import lvc.pro.com.pro.utils.StringUtils;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Outgoing extends Fragment implements MainActivity.refreshstener,ActionMode.Callback {
+public class Outgoing extends Fragment implements MainActivity.refreshstener, ActionMode.Callback {
     private static final String TAG = "Outgoing";
 
     private OutgoingAdapter recyclerAdapter;
@@ -283,7 +283,7 @@ public class Outgoing extends Fragment implements MainActivity.refreshstener,Act
             recordedContacts.clear();
         }
 //crash        recordedContacts = ContactProvider.getCallList(getContext(), recording2, "OUT");
-        if(getContext()!=null) {
+        if (getContext() != null) {
             recordedContacts = ContactProvider.getCallList(getContext(), recording2, "OUT");
         }
 //        Log.d(TAG, "showContacts: recordedContacts: " + recordedContacts);
@@ -521,6 +521,7 @@ public class Outgoing extends Fragment implements MainActivity.refreshstener,Act
             refreshItems();
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();

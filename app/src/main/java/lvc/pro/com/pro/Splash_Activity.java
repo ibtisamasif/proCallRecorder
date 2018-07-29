@@ -13,7 +13,9 @@ import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class Splash_Activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.sIS_FROM_ANOTHER_ACTIVITY=true;
+        Constants.sIS_FROM_ANOTHER_ACTIVITY = true;
         Fabric.with(this, new Crashlytics());
         SharedPreferences SP1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean b1 = SP1.getBoolean("LOCK", false);

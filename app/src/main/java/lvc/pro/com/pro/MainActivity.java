@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.action_bar);
         setSupportActionBar(toolbar);
-        mMainActivityInstance=this;
+        mMainActivityInstance = this;
         // bar = new ProgressDialog(this);
         // bar.setMessage("Fetching Contacts..");
         prefofsync = getSharedPreferences("SYNC", MODE_PRIVATE);
@@ -433,6 +433,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.setting) {
@@ -561,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int storage = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);//
         int call = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);//
         int read_phonestate = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);//
-       // int Capture_audio_output = ContextCompat.checkSelfPermission(this, Manifest.permission.CAPTURE_AUDIO_OUTPUT);
+        // int Capture_audio_output = ContextCompat.checkSelfPermission(this, Manifest.permission.CAPTURE_AUDIO_OUTPUT);
         int process_outgoing_call = ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS);//
         int modify_audio_setting = ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS);//
         int read_contacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);//
@@ -622,7 +623,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
     }
-//pre
+
+    //pre
   /*  @Override
     protected void onResume() {
         super.onResume();
@@ -641,33 +643,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            Log.d("TAG", "The interstitial wasn't loaded yet.");
 //        }
     }*/
-@Override
-protected void onResume() {
-    super.onResume();
-    if (!(Favourite.mIsDestroying
-            || Recording_issue.mIsDestroying
-            || SettingsActivity.mIsDestroying
-            || FAQActivity.mIsDestroying ||
-            Main2Activity.mIsDestroying)) {
-        if (SharedPreferenceUtility.getLockActivatedStatus(getApplicationContext())) {
-            if ((SharedPreferenceUtility.getBackgroundStatus(getApplicationContext())) && (!(Constants.sIS_FROM_ANOTHER_ACTIVITY))) {
-                Constants.sIS_FROM_BACKGROUND = true;
-                Intent intent = new Intent(MainActivity.this, NewPinLock.class);
-                startActivity(intent);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!(Favourite.mIsDestroying
+                || Recording_issue.mIsDestroying
+                || SettingsActivity.mIsDestroying
+                || FAQActivity.mIsDestroying ||
+                Main2Activity.mIsDestroying)) {
+            if (SharedPreferenceUtility.getLockActivatedStatus(getApplicationContext())) {
+                if ((SharedPreferenceUtility.getBackgroundStatus(getApplicationContext())) && (!(Constants.sIS_FROM_ANOTHER_ACTIVITY))) {
+                    Constants.sIS_FROM_BACKGROUND = true;
+                    Intent intent = new Intent(MainActivity.this, NewPinLock.class);
+                    startActivity(intent);
+                }
             }
         }
+        Constants.sIS_FROM_ANOTHER_ACTIVITY = false;
+        Constants.sFROM_MAIN_TO_ACTIVITY = false;
+        if (prefofsync.getBoolean("RED", true)) {
+            bar = new ProgressDialog(this);
+            bar.setMessage("Fetching Contacts..");
+            bar.setCancelable(false);
+            new AsyncAdapter1().execute();
+        } else {
+            new AsyncAdapter1().execute();
+        }
     }
-    Constants.sIS_FROM_ANOTHER_ACTIVITY = false;
-    Constants.sFROM_MAIN_TO_ACTIVITY = false;
-    if (prefofsync.getBoolean("RED", true)) {
-        bar = new ProgressDialog(this);
-        bar.setMessage("Fetching Contacts..");
-        bar.setCancelable(false);
-        new AsyncAdapter1().execute();
-    } else {
-        new AsyncAdapter1().execute();
-    }
-}
 
     private class AsyncAdapter1 extends AsyncTask<Void, Integer, ArrayList<Contacts>> {
 
@@ -675,8 +677,7 @@ protected void onResume() {
         protected void onPostExecute(ArrayList<Contacts> contactses) {
 
             refreshlistenerobj.refresh(true);
-            if(allFragment.isAdded())
-            {
+            if (allFragment.isAdded()) {
                 allFragment.refresh(true);
             }
             if (prefofsync.getBoolean("RED", true)) {
@@ -784,6 +785,7 @@ protected void onResume() {
             }).setCancelable(false).create().show();
         }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
