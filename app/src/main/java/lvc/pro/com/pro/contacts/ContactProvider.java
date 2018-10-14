@@ -353,7 +353,7 @@ public class ContactProvider {
                     //no contact show them
                     long timestamp = 1;
                     try {
-                        timestamp = new Long(recordedfilearray[1]).longValue();
+                        timestamp = new Long(recordedfilearray[1]).longValue(); // TODO: 10/8/2018 ArrayIndexOutOfBoundsException:
                     } catch (ArrayIndexOutOfBoundsException e) {
                         e.printStackTrace();
                         continue;
