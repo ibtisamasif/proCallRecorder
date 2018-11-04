@@ -37,6 +37,7 @@
         <item>Voice Commmunication</item>
         <item>Voice Recogintion</item>
         <item>Voice Call</item>
+        <item>Camcorder</item>
     </string-array>
     <string-array name="pref_saving_recording_options">
         <item>Automatically save</item>
@@ -45,9 +46,8 @@
         <item>Shake to record</item>
     </string-array>
     <string-array name="pref_recording_quality_options">
-        <item>High</item>
-        <item>Medium</item>
-        <item>Low</item>
+        <item>Very High</item>
+        <item>Normal(Recommended)</item>
     </string-array>
     <string-array name="pref_upload_to_cloud_options">
         <item>Don\'t Auto Upload to cloud</item>
@@ -70,7 +70,6 @@
     <string-array name="pref_recording_quality_list_values">
         <item>0</item>
         <item>1</item>
-        <item>2</item>
     </string-array>
     <string-array name="pref_example_list_values">
         <item>0</item>
@@ -78,6 +77,7 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>5</item>
     </string-array>
     <string name="search_hint">enter number or name</string>
     <!-- Example settings for Data & Sync -->

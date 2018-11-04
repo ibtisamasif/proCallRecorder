@@ -318,15 +318,15 @@ public class CallDetectionService extends Service {
             sampleDir.mkdirs();
         }
 
-        int source = Integer.parseInt(SP.getString("RECORDER", "2"));
+        int source = Integer.parseInt(SP.getString("RECORDER", "1"));
         Log.d(TAG, " source value: " + source);
         switch (source) {
             case 0:
                 try {
                     mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                     audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-                    audioManager.setStreamVolume(3, audioManager.getStreamMaxVolume(3), 0);
-                    audioManager.setSpeakerphoneOn(true);
+                    audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL), 0);
+//                    audioManager.setSpeakerphoneOn(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -366,6 +366,13 @@ public class CallDetectionService extends Service {
                     e.printStackTrace();
                 }
                 break;
+            case 5:
+                try {
+                    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
             default:
                 try {
                     mediaRecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
@@ -382,71 +389,26 @@ public class CallDetectionService extends Service {
         try {
             switch (recordingQuality) {
                 case 0: {
+                    Log.d(TAG, " recording quality code " + "high ");
                     audiofile = File.createTempFile(file_name, ".m4a", sampleDir);
+//                    mediaRecorder.setAudioSamplingRate(44100);
+//                    mediaRecorder.setAudioEncodingBitRate(96000);
+                    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
                     break;
                 }
                 default:
-                    audiofile = File.createTempFile(file_name, ".3gpp", sampleDir);
+                    Log.d(TAG, " recording quality code " + "default ");
+                    audiofile = File.createTempFile(file_name, ".3gp", sampleDir);
+//                    mediaRecorder.setAudioSamplingRate(44100);
+//                    mediaRecorder.setAudioEncodingBitRate(96000);
+                    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             }
             Log.d(TAG, audiofile.getName());
             //  audiofile = File.createTempFile(file_name, ".3gpp", sampleDir);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-//        try {
-//            switch (recordingQuality) {
-//                case 0: {
-//                    Log.d(TAG, " recording quality code " + "high ");
-//                    mediaRecorder.setAudioSamplingRate(44000); //44100
-//                    mediaRecorder.setAudioEncodingBitRate(96000);
-//                    break;
-//                }
-//                case 1: {
-//                    Log.d(TAG, " recording quality code " + "med ");
-//                    mediaRecorder.setAudioSamplingRate(11000);
-//                    mediaRecorder.setAudioEncodingBitRate(45000);
-//                    break;
-//                }
-//                case 2: {
-//                    Log.d(TAG, " recording quality code " + "low");
-//                    mediaRecorder.setAudioSamplingRate(8000);
-//                    mediaRecorder.setAudioEncodingBitRate(12200);
-//                    break;
-//                }
-//                default:
-//                    Log.d(TAG, " recording quality code " + "default ");
-//                    mediaRecorder.setAudioSamplingRate(8000);
-//                    mediaRecorder.setAudioEncodingBitRate(12200);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//        } catch (Exception e) {
-//            try {
-//                mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-//            } catch (Exception d) {
-//                d.printStackTrace();
-//            }
-//        }
-//        try {
-//            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        if (Build.VERSION.SDK_INT >= 10) {
-            mediaRecorder.setAudioSamplingRate(44100);
-            mediaRecorder.setAudioEncodingBitRate(96000);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        } else {
-            // older version of Android, use crappy sounding voice codec
-            mediaRecorder.setAudioSamplingRate(44100);
-            mediaRecorder.setAudioEncodingBitRate(96000);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         }
         try {
             mediaRecorder.setOutputFile(audiofile.getAbsolutePath());

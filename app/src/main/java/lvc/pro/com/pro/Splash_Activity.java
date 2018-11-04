@@ -32,6 +32,7 @@ public class Splash_Activity extends Activity {
         super.onCreate(savedInstanceState);
         Constants.sIS_FROM_ANOTHER_ACTIVITY = true;
         Fabric.with(this, new Crashlytics());
+        int b = 20/0;
         SharedPreferences SP1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean b1 = SP1.getBoolean("LOCK", false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -96,8 +97,9 @@ public class Splash_Activity extends Activity {
         int call = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);//
         int read_phonestate = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);//
         int process_outgoing_call = ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS);//
-        int modify_audio_setting = ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS);//
         int read_contacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);//
+        int readStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);//
+        int modify_audio_setting = ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS);//
 
         if (read_contacts != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_CONTACTS);
@@ -120,6 +122,9 @@ public class Splash_Activity extends Activity {
         }
         if (recordaudio != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.RECORD_AUDIO);
+        }
+        if (readStorage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray

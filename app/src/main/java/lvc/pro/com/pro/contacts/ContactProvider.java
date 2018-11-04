@@ -771,7 +771,7 @@ public class ContactProvider {
     }
 
     public static String getFolderPath(Context context) {
-        SharedPreferences directorypreference = context.getSharedPreferences("DIRECTORY", Context.MODE_PRIVATE);
+        SharedPreferences directorypreference = context.getSharedPreferences("DIRECTORY", Context.MODE_PRIVATE);// TODO: 11/4/2018 npe
         String s = directorypreference.getString("DIR", Environment.getExternalStorageDirectory().getAbsolutePath() + "/CallRecorder");
         return s;
     }
