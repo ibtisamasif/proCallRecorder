@@ -32,7 +32,6 @@ public class Splash_Activity extends Activity {
         super.onCreate(savedInstanceState);
         Constants.sIS_FROM_ANOTHER_ACTIVITY = true;
         Fabric.with(this, new Crashlytics());
-        int b = 20/0;
         SharedPreferences SP1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean b1 = SP1.getBoolean("LOCK", false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -22,8 +22,8 @@ android {
         applicationId "com.callrecorder.procallrecorder"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 13   //13 is in production
-        versionName '1.9' //1.9 in production yet
+        versionCode 14   //14 is in production
+        versionName '2.0' //2.0 in production yet
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -66,4 +66,8 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true;
     }
+    // Stetho core
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    //Optional network helper
+    implementation 'com.facebook.stetho:stetho-okhttp:1.5.0'
 }
