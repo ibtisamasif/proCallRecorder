@@ -13,7 +13,9 @@ import android.support.v7.widget.LinearLayoutCompat;
 import android.widget.LinearLayout;
 
 import com.callrecorder.pro.R;
+import com.crashlytics.android.Crashlytics;
 
+import io.fabric.sdk.android.Fabric;
 import lvc.pro.com.pro.Splash_Activity;
 
 public class OnBoardingActivity extends AppCompatActivity {
@@ -28,7 +30,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding);
-
+        Fabric.with(this, new Crashlytics());
         final SharedPreferences pref = this.getSharedPreferences("FirstRun", Context.MODE_PRIVATE);
         boolean f1 = pref.getBoolean("isFirstRun", true);
         if (!f1) {

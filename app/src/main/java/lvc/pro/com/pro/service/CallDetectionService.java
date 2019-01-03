@@ -155,20 +155,16 @@ public class CallDetectionService extends Service {
                 onIncomingCallStarted(context, number, callStartTime);
                 break;
             case TelephonyManager.CALL_STATE_OFFHOOK:
-                Log.d(TAG, " call started ");
                 if (lastState != TelephonyManager.CALL_STATE_RINGING) {
                     isIncoming = false;
                     callStartTime = new Date();
                     onOutgoingCallStarted(context, savedNumber, callStartTime);
-//
                 } else {
                     isIncoming = true;
                     callStartTime = new Date();
                     onIncomingCallAnswered(context, savedNumber, callStartTime);
                 }
-
                 break;
-
             case TelephonyManager.CALL_STATE_IDLE:
                 //call ended
                 if (lastState == TelephonyManager.CALL_STATE_RINGING) {
@@ -302,6 +298,7 @@ public class CallDetectionService extends Service {
 
     public void startRecord(Context context, String name) {
         SP = PreferenceManager.getDefaultSharedPreferences(context);
+        // default value is 0 for call recording so as to record call by default
         int saveRecording = Integer.parseInt(SP.getString(context.getString(R.string.shared_pref_saving_pref_key), "0"));
         if (saveRecording == 1) {
             record = false;

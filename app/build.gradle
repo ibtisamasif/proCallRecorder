@@ -22,8 +22,8 @@ android {
         applicationId "com.callrecorder.procallrecorder"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 15   //14 is in production
-        versionName '2.1' //2.0 in production yet
+        versionCode 15
+        versionName '2.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
