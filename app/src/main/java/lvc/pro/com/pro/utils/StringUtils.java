@@ -17,7 +17,7 @@ public class StringUtils {
             preparednumbers = preparednumbers.replace(")", "");
             if (preparednumbers.contains("+")) {
                 try {
-                    // preparednumbers = preparednumbers.replace(preparednumbers.substring(0, 3), ""); //to remove country code
+                    preparednumbers = preparednumbers.replace(preparednumbers.substring(0, 3), ""); //to remove country code
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

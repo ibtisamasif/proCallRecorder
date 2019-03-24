@@ -3,9 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.callrecorder.pro">
 
-    <!--Protection level Highly dangerous-->
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
-    <!--Protection level dangerous-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />

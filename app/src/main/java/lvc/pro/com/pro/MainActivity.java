@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -46,6 +47,9 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.callrecorder.pro.R;
+import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
+import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler;
+import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -108,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.action_bar);
         setSupportActionBar(toolbar);
         mMainActivityInstance = this;
+        loadFfmpeg();
         // bar = new ProgressDialog(this);
         // bar.setMessage("Fetching Contacts..");
         prefofsync = getSharedPreferences("SYNC", MODE_PRIVATE);
@@ -515,7 +520,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(MainActivity.this, Recording_issue.class);
             startActivity(intent);
         } else if (id == R.id.contact) {
-            new AsyncAdapter1().execute();
+            new AsyncAdapter1(MainActivity.this).execute();
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -563,7 +568,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int call = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);//
         int read_phonestate = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);//
         // int Capture_audio_output = ContextCompat.checkSelfPermission(this, Manifest.permission.CAPTURE_AUDIO_OUTPUT);
-        int process_outgoing_call = ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS);//
+//        int process_outgoing_call = ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS);//
         int read_contacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);//
         int readStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);//
         int modify_audio_setting = ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS);//
@@ -577,9 +582,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (modify_audio_setting != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.MODIFY_AUDIO_SETTINGS);
         }
-        if (process_outgoing_call != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.PROCESS_OUTGOING_CALLS);
-        }
+//        if (process_outgoing_call != PackageManager.PERMISSION_GRANTED) {
+//            listPermissionsNeeded.add(Manifest.permission.PROCESS_OUTGOING_CALLS);
+//        }
         if (read_phonestate != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
         }
@@ -622,7 +627,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case PERMISSIONS_REQUEST_READ_CONTACTS:
                 // Permission is granted
                 if (prefofsync.getBoolean("RED", true)) {
-                    new AsyncAdapter1().execute();
+                    new AsyncAdapter1(MainActivity.this).execute();
                 }
                 break;
         }
@@ -665,31 +670,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         Constants.sIS_FROM_ANOTHER_ACTIVITY = false;
         Constants.sFROM_MAIN_TO_ACTIVITY = false;
-        if (prefofsync.getBoolean("RED", true)) {
-            bar = new ProgressDialog(this);
-            bar.setMessage("Fetching Contacts..");
-            bar.setCancelable(false);
-            new AsyncAdapter1().execute();
-        } else {
-            new AsyncAdapter1().execute();
-        }
+        new AsyncAdapter1(MainActivity.this).execute();
     }
 
     private class AsyncAdapter1 extends AsyncTask<Void, Integer, ArrayList<Contacts>> {
+        private Context context;
+
+        public AsyncAdapter1(MainActivity mainActivity) {
+
+            this.context = mainActivity;
+
+        }
+
 
         @Override
         protected void onPostExecute(ArrayList<Contacts> contactses) {
-
-            refreshlistenerobj.refresh(true);
-            if (allFragment.isAdded()) {
-                allFragment.refresh(true);
+            if (bar != null && bar.isShowing()) {
+                bar.dismiss();
             }
             if (prefofsync.getBoolean("RED", true)) {
-                bar.dismiss();
                 SharedPreferences.Editor editor = prefofsync.edit();
                 editor.putBoolean("RED", false);
                 editor.apply();
                 addAppToProtectedMode();
+                Log.v("OnPostPref", String.valueOf(prefofsync.getBoolean("RED", true)));
+            }
+            refreshlistenerobj.refresh(true);
+            if (allFragment.isAdded()) {
+                allFragment.refresh(true);
+                bar.dismiss();
             }
 
 
@@ -711,7 +720,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         protected void onPreExecute() {
+            if (bar != null && bar.isShowing()) {
+                bar.dismiss();
+            }
             super.onPreExecute();
+            Log.v("OnPreExecutePref", String.valueOf(prefofsync.getBoolean("RED", true)));
+            bar = new ProgressDialog(context);
+            bar.setMessage("Fetching Contacts..");
+            bar.setCancelable(false);
             if (prefofsync.getBoolean("RED", true)) {
                 bar.show();
             }
@@ -719,23 +735,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public boolean setSearchQuery() {
-        if (!(mSearchView.getQuery().toString().trim().equalsIgnoreCase(""))) {
-            if (queylistener != null) {
-                queylistener.Search_name(mSearchView.getQuery() + "");
+        if (mSearchView.getQuery() != null) {
+            if (!(mSearchView.getQuery().toString().trim().equalsIgnoreCase(""))) {
+                if (queylistener != null) {
+                    queylistener.Search_name(mSearchView.getQuery() + "");
+                }
+                if (queylistener2 != null) {
+                    queylistener2.Search_name2(mSearchView.getQuery() + "");
+                }
+                if (queylistener3 != null) {
+                    queylistener3.Search_name3(mSearchView.getQuery() + "");
+                }
+                return true;
             }
-            if (queylistener2 != null) {
-                queylistener2.Search_name2(mSearchView.getQuery() + "");
-            }
-            if (queylistener3 != null) {
-                queylistener3.Search_name3(mSearchView.getQuery() + "");
-            }
-            return true;
         }
         return false;
     }
 
     @Override
     protected void onDestroy() {
+        if (bar!=null&&bar.isShowing()){
+            bar.dismiss();
+        }
         super.onDestroy();
         //  startService(new Intent(this, ShakeDetectionService.class));
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -818,6 +839,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         SharedPreferenceUtility.setBackgroundStatus(getApplicationContext(), true);
 
+    }
+
+    private void loadFfmpeg() {
+        FFmpeg ffmpeg = FFmpeg.getInstance(MainActivity.this);
+        try {
+            ffmpeg.loadBinary(new LoadBinaryResponseHandler() {
+
+                @Override
+                public void onStart() {
+                    Log.d("start", "start");
+                }
+
+                @Override
+                public void onFailure() {
+                    Log.d("failure", "failure");
+                }
+
+                @Override
+                public void onSuccess() {
+                    Log.d("success", "success");
+                }
+
+                @Override
+                public void onFinish() {
+                    Log.d("finish", "finish");
+                }
+            });
+        } catch (FFmpegNotSupportedException e) {
+            // Handle if FFmpeg is not supported by device
+        }
     }
 
 

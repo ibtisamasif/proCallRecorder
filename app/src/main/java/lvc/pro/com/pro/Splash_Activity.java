@@ -12,10 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,7 +90,7 @@ public class Splash_Activity extends Activity {
         int storage = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);//
         int call = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);//
         int read_phonestate = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);//
-        int process_outgoing_call = ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS);//
+//        int process_outgoing_call = ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS);//
         int read_contacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);//
         int readStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);//
         int modify_audio_setting = ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS);//
@@ -108,9 +104,9 @@ public class Splash_Activity extends Activity {
         if (modify_audio_setting != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.MODIFY_AUDIO_SETTINGS);
         }
-        if (process_outgoing_call != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.PROCESS_OUTGOING_CALLS);
-        }
+//        if (process_outgoing_call != PackageManager.PERMISSION_GRANTED) {
+//            listPermissionsNeeded.add(Manifest.permission.PROCESS_OUTGOING_CALLS);
+//        }
 
         if (read_phonestate != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);

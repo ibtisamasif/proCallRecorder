@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -118,11 +119,12 @@ public class Incomming extends Fragment implements MainActivity.refreshstener, A
             // Android version is lesser than 6.0 or the permission is already granted.
             showContacts();
         }
+        if (message!=null){
         if (realrecordingcontacts.isEmpty()) {
             message.setVisibility(View.VISIBLE);
         } else {
             message.setVisibility(View.GONE);
-        }
+        }}
         recyclerAdapter.setContacts(realrecordingcontacts); //fix this
 
 
@@ -235,11 +237,12 @@ public class Incomming extends Fragment implements MainActivity.refreshstener, A
 
                 } else {
                     mensu = false;
+                    if (message!=null){
                     if (realrecordingcontacts.isEmpty()) {
                         message.setVisibility(View.VISIBLE);
                     } else {
                         message.setVisibility(View.GONE);
-                    }
+                    }}
                     recyclerAdapter.setContacts(realrecordingcontacts);
                     recyclerAdapter.notifyDataSetChanged();
 
@@ -274,13 +277,15 @@ public class Incomming extends Fragment implements MainActivity.refreshstener, A
     private void refreshItems() {
         recordings = ContactProvider.showAllRecordedlistfiles(ctx);
         showContacts();
+        if (message!=null){
         if (realrecordingcontacts.isEmpty()) {
             message.setVisibility(View.VISIBLE);
         } else {
             message.setVisibility(View.GONE);
-        }
+        }}
+        if (recyclerAdapter!=null){
         recyclerAdapter.setContacts(realrecordingcontacts);
-        recyclerAdapter.notifyDataSetChanged();
+        recyclerAdapter.notifyDataSetChanged();}
         MainActivity.fetchSearchRecords();
     }
 
@@ -352,16 +357,18 @@ public class Incomming extends Fragment implements MainActivity.refreshstener, A
             }
             realrecordingcontacts.add(date);
         }
+        if (message!=null){
         if (realrecordingcontacts.isEmpty()) {
             message.setVisibility(View.VISIBLE);
         } else {
             message.setVisibility(View.GONE);
-        }
+        }}
         recyclerAdapter.notifyDataSetChanged();
+        if (swipeRefreshLayout!=null){
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(ctx, ctx.getString(R.string.records_refreshed), Toast.LENGTH_SHORT).show();
-        }
+        }}
     }
 
     private ArrayList<Contacts> sorts(ArrayList<Contacts> contactses) {
@@ -553,6 +560,13 @@ public class Incomming extends Fragment implements MainActivity.refreshstener, A
     @Override
     public void onResume() {
         super.onResume();
-        refreshItems();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshItems();
+            }
+        }, 500);
+
     }
 }

@@ -26,6 +26,9 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.callrecorder.pro.R;
+import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
+import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
+import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 import com.microsoft.onedrivesdk.saver.ISaver;
 import com.microsoft.onedrivesdk.saver.Saver;
 
@@ -57,7 +60,7 @@ public class CallDetectionService extends Service {
     private static Date callStartTime;
     private static boolean isIncoming;
     private static String savedNumber;  //because the passed incoming is only valid in ringing
-    static MediaRecorder mediaRecorder = new MediaRecorder();
+    static MediaRecorder mediaRecorder ;
     static AudioManager audioManager;
     static File audiofile;
     //    Context context;
@@ -116,7 +119,7 @@ public class CallDetectionService extends Service {
 
     final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(final Context context, final Intent intent) {
 
             Log.d(TAG, "onReceive: Called");
 //            this.context = context;
@@ -127,16 +130,19 @@ public class CallDetectionService extends Service {
             } else {
                 String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
                 String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
-                int state = 0;
-                if (stateStr.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
-                    state = TelephonyManager.CALL_STATE_IDLE;
-                } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-                    state = TelephonyManager.CALL_STATE_OFFHOOK;
-                } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-                    state = TelephonyManager.CALL_STATE_RINGING;
-                }
+                Log.v("callState", stateStr + "--" + number + "--");
 
-                onCallStateChanged(context, state, number);
+                if (number != null) {
+                    int state = 0;
+                    if (stateStr.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
+                        state = TelephonyManager.CALL_STATE_IDLE;
+                    } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+                        state = TelephonyManager.CALL_STATE_OFFHOOK;
+                    } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+                        state = TelephonyManager.CALL_STATE_RINGING;
+                    }
+                    onCallStateChanged(context, state, number);
+                }
             }
 
         }
@@ -158,23 +164,23 @@ public class CallDetectionService extends Service {
                 if (lastState != TelephonyManager.CALL_STATE_RINGING) {
                     isIncoming = false;
                     callStartTime = new Date();
-                    onOutgoingCallStarted(context, savedNumber, callStartTime);
+                    onOutgoingCallStarted(context, number, callStartTime);
                 } else {
                     isIncoming = true;
                     callStartTime = new Date();
-                    onIncomingCallAnswered(context, savedNumber, callStartTime);
+                    onIncomingCallAnswered(context, number, callStartTime);
                 }
                 break;
             case TelephonyManager.CALL_STATE_IDLE:
                 //call ended
                 if (lastState == TelephonyManager.CALL_STATE_RINGING) {
                     // a miss call
-                    onMissedCall(context, savedNumber, callStartTime);
+                    onMissedCall(context, number, callStartTime);
                 } else if (isIncoming) {
-                    onIncomingCallEnded(context, savedNumber, callStartTime, new Date());
+                    onIncomingCallEnded(context, number, callStartTime, new Date());
                     isIncoming = false;
                 } else {
-                    onOutgoingCallEnded(context, savedNumber, callStartTime, new Date());
+                    onOutgoingCallEnded(context, number, callStartTime, new Date());
                 }
 
                /* if (lastState == TelephonyManager.CALL_STATE_OFFHOOK) {
@@ -256,7 +262,9 @@ public class CallDetectionService extends Service {
             stopRecording(ctx);
         }
         NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+        if (notificationManager != null) {
+            notificationManager.cancelAll();
+        }
     }
 
     protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end) {
@@ -297,6 +305,7 @@ public class CallDetectionService extends Service {
 
 
     public void startRecord(Context context, String name) {
+        mediaRecorder=new MediaRecorder();
         SP = PreferenceManager.getDefaultSharedPreferences(context);
         // default value is 0 for call recording so as to record call by default
         int saveRecording = Integer.parseInt(SP.getString(context.getString(R.string.shared_pref_saving_pref_key), "0"));
@@ -382,12 +391,11 @@ public class CallDetectionService extends Service {
         // default value is 0 for call recording so as to record high quality call by default
         int recordingQuality = Integer.parseInt(SP.getString(context.getString(R.string.shared_pref_recording_quality_pref_key), "0"));
         Log.d(TAG, " recording quality " + recordingQuality);
-        String file_name = name;
         try {
             switch (recordingQuality) {
                 case 0: {
                     Log.d(TAG, " recording quality code " + "high ");
-                    audiofile = File.createTempFile(file_name, ".m4a", sampleDir);
+                    audiofile = File.createTempFile(name, ".m4a", sampleDir);
 //                    mediaRecorder.setAudioSamplingRate(44100);
 //                    mediaRecorder.setAudioEncodingBitRate(96000);
                     mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
@@ -396,11 +404,29 @@ public class CallDetectionService extends Service {
                 }
                 default:
                     Log.d(TAG, " recording quality code " + "default ");
-                    audiofile = File.createTempFile(file_name, ".3gp", sampleDir);
+                    audiofile = File.createTempFile(name, ".3gp", sampleDir);
 //                    mediaRecorder.setAudioSamplingRate(44100);
 //                    mediaRecorder.setAudioEncodingBitRate(96000);
-                    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                    try {
+                        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        try {
+                            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                        }catch (Exception e1){
+                            e1.printStackTrace();
+                        }
+                    }
+                    try {
+                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        try {
+                            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                        }catch (Exception e1){
+                            e1.printStackTrace();
+                        }
+                    }
             }
             Log.d(TAG, audiofile.getName());
             //  audiofile = File.createTempFile(file_name, ".3gpp", sampleDir);
@@ -429,6 +455,9 @@ public class CallDetectionService extends Service {
         if (record) {
             try {
                 mediaRecorder.stop();
+                mediaRecorder.release();
+                mediaRecorder=null;
+                convertAudio();
                 if (SP == null) {
                     SP = PreferenceManager.getDefaultSharedPreferences(pContext);
                 }
@@ -521,6 +550,7 @@ public class CallDetectionService extends Service {
             contacts.setNumber(number);
             db.addContact(contacts);
         }
+        db.close();
     }
 
     private boolean getnotifysetting(Context context) {
@@ -578,6 +608,58 @@ public class CallDetectionService extends Service {
                 audiofile.delete();
                 Log.d(TAG, audiofile.getName());
             }
+        }
+    }
+    private String conversionOutputPath() {
+        String inputPath = audiofile.getPath();
+        String outputPath = "";
+        if (inputPath.contains(".3gp")) {
+            outputPath = inputPath.replace(".3gp", ".mp3");
+        } else if (inputPath.contains(".m4a")) {
+            outputPath = inputPath.replace(".m4a", ".mp3");
+        }
+
+        String cmdStr = "-i" + "," + inputPath + "," + "-filter:a" + "," + "volume=10.0" + "," + "-b:a" + ",320k," + outputPath;
+        Log.d("commandStr", cmdStr);
+
+        return cmdStr;
+    }
+
+    private void convertAudio() {
+        FFmpeg ffmpeg = FFmpeg.getInstance(CallDetectionService.this);
+        try {
+            String[] cmd = (conversionOutputPath().split(","));
+            //Log.v("arraycmd", String.valueOf(cmd));
+            // to execute "ffmpeg -version" command you just need to pass "-version"
+            ffmpeg.execute(cmd, new ExecuteBinaryResponseHandler() {
+
+                @Override
+                public void onStart() {
+                }
+
+                @Override
+                public void onProgress(String message) {
+                    Log.v("onProgress", message);
+                }
+
+                @Override
+                public void onFailure(String message) {
+                    Log.v("onFailure", message);
+                }
+
+                @Override
+                public void onSuccess(String message) {
+                    audiofile.delete();
+                    Log.v("onSuccess", message);
+                }
+
+                @Override
+                public void onFinish() {
+//                    Toast.makeText(getApplicationContext(),"Conversion Done",Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (FFmpegCommandAlreadyRunningException e) {
+            // Handle if FFmpeg is already running
         }
     }
 

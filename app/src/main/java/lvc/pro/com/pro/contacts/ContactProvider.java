@@ -94,6 +94,7 @@ public class ContactProvider {
                 }
             }
         }
+        if (cursor!=null)
         cursor.close();
         return list;
     }
@@ -168,7 +169,7 @@ public class ContactProvider {
                     //incoming
                     for (Contacts people : allContactList) {
                         if (StringUtils.prepareContacts(ctx, people.getNumber()).equalsIgnoreCase(recordedfilearray[0])) {
-                            long timestamp = new Long(recordedfilearray[1]).longValue();
+                            long timestamp = Long.valueOf(recordedfilearray[1]);
                             String relative_time = ContactProvider.getRelativeTime(timestamp);
                             Contacts contacts = new Contacts();
                             contacts.setName(people.getName());
@@ -201,7 +202,7 @@ public class ContactProvider {
                     }
                     if (!hascontact) {
                         //no contact show them
-                        long timestamp = new Long(recordedfilearray[1]).longValue();
+                        long timestamp = Long.valueOf(recordedfilearray[1]);
                         String relative_time = ContactProvider.getRelativeTime(timestamp);
                         Contacts nocontact = new Contacts();
                         nocontact.setNumber(recordedfilearray[0]);
@@ -771,8 +772,14 @@ public class ContactProvider {
     }
 
     public static String getFolderPath(Context context) {
-        SharedPreferences directorypreference = context.getSharedPreferences("DIRECTORY", Context.MODE_PRIVATE);// TODO: 11/4/2018 npe
-        String s = directorypreference.getString("DIR", Environment.getExternalStorageDirectory().getAbsolutePath() + "/CallRecorder");
+        String s = "";
+        if (context != null) {
+            SharedPreferences directorypreference = context.getSharedPreferences("DIRECTORY", Context.MODE_PRIVATE);// TODO: 11/4/2018 npe
+            if (directorypreference != null) {
+                s = directorypreference.getString("DIR", Environment.getExternalStorageDirectory().getAbsolutePath() + "/CallRecorder");
+            }
+            return s;
+        }
         return s;
     }
 
